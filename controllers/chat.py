@@ -6,10 +6,19 @@ from odoo import http
 from odoo.http import request
 from groq import Groq
 from sentence_transformers import SentenceTransformer
+import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 _logger = logging.getLogger(__name__)
 
-client = Groq(api_key="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")
+# Initialize Groq client with API key from environment
+api_key = os.getenv('GROQ_API_KEY')
+if not api_key:
+    _logger.error("GROQ_API_KEY not found in environment variables")
+client = Groq(api_key=api_key)
 
 class WebsiteChat(http.Controller):
     
